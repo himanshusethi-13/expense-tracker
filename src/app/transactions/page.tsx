@@ -1,27 +1,37 @@
 import type { Metadata } from "next";
+import AddTransactionForm from "@/components/AddTransactionForm";
 import EmptyState from "@/components/EmptyState";
+import TransactionTable from "@/components/TransactionTable";
+import {todayISO} from "@/lib/format";
+import { listTransactions } from "@/lib/transactions";
 
-export const metadata: Metadata = {
-  title: "Transactions | Expense Tracker",
-  description: "View your transaction history and details.",
-};
+export const metadata: Metadata = { title: "Transactions | Expense Tracker"};
+
+//Read fresh data from the database on every visit
+export const dynamic="force-dynamic";
 
 export default function TransactionsPage() {
+  const transactions = listTransactions();
+
   return (
     <div className="space-y-6">
         <section>
             <h1 className="text-2xl font-semibold tracking-tight">Transactions</h1>
             <p className="mt-1 text-sm text-muted">
-                Every line from your statements, categorised. You&apos;ll be able to filter and re-categorise your transactions here.
+                Add expenses manually for now. Statement Import will be available soon.
             </p>
         </section>
-      
-      <EmptyState
-        title="No Transactions Found"
-        description="Transactions will appear here once you import your bank statements or add them manually."
-        actionHref="/import"
-        actionLabel="Import Statement"
-      />
+
+        <AddTransactionForm defaultDate={todayISO()} />
+
+        {transactions.length === 0 ? (
+          <EmptyState
+            title="No Transactions Yet"
+            description="Add your first transaction using the form above."
+          />
+        ) : (
+          <TransactionTable transactions={transactions} />
+        )}
     </div>
   );
 }
