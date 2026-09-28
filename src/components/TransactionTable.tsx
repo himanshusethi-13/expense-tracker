@@ -19,7 +19,8 @@ export default function TransactionTable({transactions}:{transactions: Transacti
                 </thead>
                 <tbody className="divide-y divide-border">
                     {transactions.map((t) => {
-                        const isMoneyIn = t.kind !== "expense"; //refunds and income
+                        const isMoneyIn = t.kind === "refund" || t.kind === "income";
+                        const isTransfer = t.kind === "transfer"; //moved between own accounts, not spending
                         return (
                             <tr key={t.id}>
                                 <td className="whitespace-nowrap px-4 py-3 text-muted">{formatDate(t.date)}</td>
@@ -35,7 +36,7 @@ export default function TransactionTable({transactions}:{transactions: Transacti
                                 </td>
                                 <td
                                     className={`whitespace-nowrap px-4 py-3 text-right tabular-nums ${
-                                        isMoneyIn ? "text-accent" : ""
+                                        isMoneyIn ? "text-accent" : isTransfer ? "text-muted" : ""
                                     }`}
                                 >
                                     {isMoneyIn ? "+ " : ""}

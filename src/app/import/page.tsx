@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
+import ImportHistory from "@/components/ImportHistory";
+import ImportWizard from "@/components/ImportWizard";
+import { listAccounts, listImports } from "@/lib/imports";
 
 export const metadata: Metadata = {
-  title: "Import Statements | Expense Tracker",
-  description: "Import your bank and credit card statements here.",
+    title: "Import Statements | Expense Tracker",
+    description: "Import your bank and credit card statements here.",
 };
+
+//Read fresh data from the database on every visit
+export const dynamic = "force-dynamic";
 
 export default function ImportPage() {
     return (
@@ -11,16 +17,12 @@ export default function ImportPage() {
             <section>
                 <h1 className="text-2xl font-semibold tracking-tight">Import Statements</h1>
                 <p className="mt-1 text-sm text-muted">
-                    Import your bank and credit card statements here. You can upload CSV files.
+                    Upload a bank or credit card statement, check the transactions, then save them.
                 </p>
             </section>
 
-            <div className="rounded-xl border border-dashed border-border bg-surface px-6 py-14 text-center">
-                <p className="text-sm font-medium">Statement upload coming soon</p>
-                <p className="mt-1 text-sm text-muted">
-                    This is where you&apos;ll drop a CSV and map its columns to date, description and amount
-                </p>
-            </div>
+            <ImportWizard accounts={listAccounts()} />
+            <ImportHistory imports={listImports()} />
         </div>
     );
 }

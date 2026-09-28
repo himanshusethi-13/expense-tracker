@@ -43,3 +43,15 @@ export function todayISO(): string {
 export function currentMonth(): string {
   return todayISO().slice(0, 7);
 }
+
+/** Moves a "YYYY-MM" month forwards or backwards, e.g. shiftMonth("2026-01", -1) -> "2025-12". */
+export function shiftMonth(month: string, delta: number): string {
+  const [year, m] = month.split('-').map(Number);
+  const d = new Date(year, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+}
+
+/** True for a real "YYYY-MM" month string (used to validate the ?month= value in the URL). */
+export function isValidMonth(value: string): boolean {
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+}

@@ -18,7 +18,7 @@ export default function TransactionsPage() {
         <section>
             <h1 className="text-2xl font-semibold tracking-tight">Transactions</h1>
             <p className="mt-1 text-sm text-muted">
-                Add expenses manually for now. Statement Import will be available soon.
+                Add transactions by hand here, or bring in a whole statement from the Import page.
             </p>
         </section>
 

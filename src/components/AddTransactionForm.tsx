@@ -13,7 +13,7 @@ const labelTextClass = "text-xs font-medium text-muted";
 
 export default function AddTransactionForm({defaultDate}:{defaultDate: string}) {
     const [state, formAction, pending] = useActionState(addTransaction, initialState);
-    const [kind, setKind] = useState<Kind>("expense"); //hides Category for salary/income
+    const [kind, setKind] = useState<Kind>("expense"); //hides Category for salary/income and transfers
 
     return (
         <form action={formAction} className="rounded-xl border border-border bg-surface p-5">
@@ -62,10 +62,11 @@ export default function AddTransactionForm({defaultDate}:{defaultDate: string}) 
                         <option value="expense">Expense</option>
                         <option value="refund">Refund/Rebate</option>
                         <option value="income">Salary / Income</option>
+                        <option value="transfer">Transfer (e.g. card bill payment)</option>
                     </select>
                 </label>
 
-                {kind !== "income" && (
+                {kind !== "income" && kind !== "transfer" && (
                 <label className={labelClass}>
                     <span className={labelTextClass}>Category</span>
                     <select name="category" required defaultValue="" className={fieldClass}>
@@ -95,7 +96,7 @@ export default function AddTransactionForm({defaultDate}:{defaultDate: string}) 
                 <button
                     type="submit" 
                     disabled={pending}
-                    className="rounded md- bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
+                    className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
                     {pending ? "Saving..." : "Add Transaction"}
                 </button>

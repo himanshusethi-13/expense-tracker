@@ -44,6 +44,14 @@ export function deleteTransaction(id: number): void {
     db.prepare("DELETE FROM transactions WHERE id = ?").run(id);
 }
 
+/** Months that have at least one transaction, newest first, e.g. ["2026-09", "2026-08"]. */
+export function listMonths(): string[] {
+    const rows = db
+        .prepare("SELECT DISTINCT substr(date, 1, 7) AS month FROM transactions ORDER BY month DESC")
+        .all() as { month: string }[];
+    return rows.map((r) => r.month);
+}
+
 type MonthTotals = {netSpendPaise: number; incomePaise: number; count: number};
 
 /** 

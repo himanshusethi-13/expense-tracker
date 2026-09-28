@@ -31,10 +31,12 @@ export async function addTransaction(_prev: FormState, formData: FormData): Prom
         return { ok: false, message: "Please choose a type" };
     }
 
-    //Salary or Income always goes under "Income": expenses and refunds need a spending category
+    //Salary or Income always goes under "Income", transfers under "Transfers": expenses and refunds need a spending category
     let category: Category;
     if (kind === "income") {
         category = "Income";
+    } else if (kind === "transfer") {
+        category = "Transfers";
     } else if (CATEGORIES.includes(categoryInput as SpendingCategory)) {
         category = categoryInput as SpendingCategory;
     } else {

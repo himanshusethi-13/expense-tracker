@@ -13,7 +13,6 @@ export const CATEGORIES = [
     "Travel",
     "Investments",
     "Transfers",
-    "Refunds",
     "Others"
 ] as const;
 
@@ -23,14 +22,15 @@ export type SpendingCategory = (typeof CATEGORIES)[number];
 export type Category = SpendingCategory | "Income";
 
 //expense is money spent, refund is money returned against a category, income is salary etc.
-export const KINDS = ["expense", "refund", "income"] as const;
+//transfer is money moved between your own accounts (e.g. paying a credit card bill); it is never spending.
+export const KINDS = ["expense", "refund", "income", "transfer"] as const;
 export type Kind = (typeof KINDS)[number];
 
 export type Transaction = {
     id: number; //unique identifier for the transaction
     date: string; //ISO date, e.g. 2026-09-14
     description: string; //raw narration from the statement
-    amountPaise: number; //positive for debit, negative for credit
+    amountPaise: number; //always positive; kind says which way the money moved
     kind: Kind;
     category: Category;
     account: string; //e.g. "HDFC Regalia", "ICICI Savings", "HSBC Credit Card"
